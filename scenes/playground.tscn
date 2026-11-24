@@ -1,0 +1,70 @@
+[gd_scene format=3 uid="uid://dt0akenky62ur"]
+
+[ext_resource type="Script" uid="uid://b4jmiftlbfjo2" path="res://scripts/player.gd" id="1_player"]
+
+[sub_resource type="RectangleShape2D" id="GroundShape"]
+size = Vector2(1400, 80)
+
+[sub_resource type="RectangleShape2D" id="PlatformShape"]
+size = Vector2(180, 24)
+
+[sub_resource type="RectangleShape2D" id="PlayerShape"]
+size = Vector2(34, 52)
+
+[node name="Playground" type="Node2D" unique_id=1646719331]
+
+[node name="Background" type="ColorRect" parent="." unique_id=1093116970]
+offset_left = -1000.0
+offset_top = -800.0
+offset_right = 2000.0
+offset_bottom = 800.0
+mouse_filter = 2
+color = Color(0.075, 0.105, 0.16, 1)
+
+[node name="Ground" type="StaticBody2D" parent="." unique_id=2065785589]
+position = Vector2(576, 600)
+
+[node name="Visual" type="Polygon2D" parent="Ground" unique_id=871884293]
+color = Color(0.22, 0.35, 0.32, 1)
+polygon = PackedVector2Array(-700, -40, 700, -40, 700, 40, -700, 40)
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Ground" unique_id=1103680090]
+shape = SubResource("GroundShape")
+
+[node name="Platform" type="StaticBody2D" parent="." unique_id=522231770]
+position = Vector2(650, 450)
+
+[node name="Visual" type="Polygon2D" parent="Platform" unique_id=1836788206]
+color = Color(0.35, 0.53, 0.43, 1)
+polygon = PackedVector2Array(-90, -12, 90, -12, 90, 12, -90, 12)
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Platform" unique_id=1709720052]
+shape = SubResource("PlatformShape")
+
+[node name="Player" type="CharacterBody2D" parent="." unique_id=440637746]
+position = Vector2(300, 480)
+script = ExtResource("1_player")
+
+[node name="Visual" type="Polygon2D" parent="Player" unique_id=881448017]
+color = Color(0.38, 0.78, 0.96, 1)
+polygon = PackedVector2Array(-17, -26, 17, -26, 17, 26, -17, 26)
+
+[node name="Eye" type="Polygon2D" parent="Player" unique_id=1673122949]
+color = Color(0.08, 0.14, 0.22, 1)
+polygon = PackedVector2Array(3, -14, 11, -14, 11, -6, 3, -6)
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Player" unique_id=2028340840]
+shape = SubResource("PlayerShape")
+
+[node name="Camera2D" type="Camera2D" parent="Player" unique_id=1817715366]
+position = Vector2(240, -100)
+
+[node name="Instructions" type="CanvasLayer" parent="." unique_id=278097578]
+
+[node name="Label" type="Label" parent="Instructions" unique_id=982616002]
+offset_left = 28.0
+offset_top = 24.0
+offset_right = 600.0
+offset_bottom = 62.0
+theme_override_font_sizes/font_size = 22
+text = "A / D or arrows: move     Space / W: jump"

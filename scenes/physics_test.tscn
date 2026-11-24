@@ -1,0 +1,142 @@
+[gd_scene format=3 uid="uid://dmdx00fgogk43"]
+
+[ext_resource type="Script" uid="uid://b4jmiftlbfjo2" path="res://scripts/player.gd" id="1_player"]
+[ext_resource type="Script" uid="uid://cy6tnah0dg27q" path="res://scripts/physics_test.gd" id="2_test"]
+[ext_resource type="Script" uid="uid://b0h2oqw7spccm" path="res://scripts/force_indicator.gd" id="3_force_indicator"]
+
+[sub_resource type="PhysicsMaterial" id="PhysicsMaterial"]
+friction = 0.65
+
+[sub_resource type="RectangleShape2D" id="GroundShape"]
+size = Vector2(1400, 80)
+
+[sub_resource type="RectangleShape2D" id="PlatformShape"]
+size = Vector2(180, 24)
+
+[sub_resource type="RectangleShape2D" id="WallShape"]
+size = Vector2(40, 300)
+
+[sub_resource type="RectangleShape2D" id="CrateShape"]
+size = Vector2(60, 60)
+
+[sub_resource type="PhysicsMaterial" id="PlayerMaterial"]
+friction = 0.0
+
+[sub_resource type="PhysicsMaterial" id="CrateMaterial"]
+friction = 0.65
+rough = true
+
+[sub_resource type="RectangleShape2D" id="PlayerShape"]
+size = Vector2(34, 52)
+
+[node name="PhysicsTest" type="Node2D" unique_id=1695517777]
+script = ExtResource("2_test")
+
+[node name="Background" type="ColorRect" parent="." unique_id=170826755]
+offset_left = -1000.0
+offset_top = -800.0
+offset_right = 2000.0
+offset_bottom = 800.0
+mouse_filter = 2
+color = Color(0.075, 0.105, 0.16, 1)
+
+[node name="Ground" type="StaticBody2D" parent="." unique_id=506691409]
+position = Vector2(576, 600)
+physics_material_override = SubResource("PhysicsMaterial")
+
+[node name="Visual" type="Polygon2D" parent="Ground" unique_id=809083953]
+color = Color(0.22, 0.35, 0.32, 1)
+polygon = PackedVector2Array(-700, -40, 700, -40, 700, 40, -700, 40)
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Ground" unique_id=478576646]
+shape = SubResource("GroundShape")
+
+[node name="Platform" type="StaticBody2D" parent="." unique_id=1638078131]
+position = Vector2(650, 450)
+
+[node name="Visual" type="Polygon2D" parent="Platform" unique_id=1015742510]
+color = Color(0.35, 0.53, 0.43, 1)
+polygon = PackedVector2Array(-90, -12, 90, -12, 90, 12, -90, 12)
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Platform" unique_id=137643917]
+shape = SubResource("PlatformShape")
+
+[node name="Wall" type="StaticBody2D" parent="."]
+position = Vector2(950, 410)
+
+[node name="Visual" type="Polygon2D" parent="Wall"]
+polygon = PackedVector2Array(-20, -150, 20, -150, 20, 150, -20, 150)
+color = Color(0.35, 0.53, 0.43, 1)
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Wall"]
+shape = SubResource("WallShape")
+
+[node name="Crate" type="RigidBody2D" parent="." unique_id=697072121]
+position = Vector2(470, 520)
+mass = 30.0
+physics_material_override = SubResource("CrateMaterial")
+max_contacts_reported = 8
+linear_damp_mode = 1
+angular_damp_mode = 1
+
+[node name="Visual" type="Polygon2D" parent="Crate" unique_id=900358102]
+color = Color(0.8, 0.49, 0.25, 1)
+polygon = PackedVector2Array(-30, -30, 30, -30, 30, 30, -30, 30)
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Crate" unique_id=292953036]
+shape = SubResource("CrateShape")
+
+[node name="ForceIndicator" type="Node2D" parent="Crate" unique_id=1208400551]
+z_index = 5
+script = ExtResource("3_force_indicator")
+
+[node name="Player" type="RigidBody2D" parent="." unique_id=4730727]
+position = Vector2(300, 480)
+mass = 70.0
+physics_material_override = SubResource("PlayerMaterial")
+can_sleep = false
+lock_rotation = true
+continuous_cd = 1
+contact_monitor = true
+max_contacts_reported = 8
+linear_damp_mode = 1
+angular_damp_mode = 1
+script = ExtResource("1_player")
+
+[node name="Visual" type="Polygon2D" parent="Player" unique_id=141070852]
+color = Color(0.38, 0.78, 0.96, 1)
+polygon = PackedVector2Array(-17, -26, 17, -26, 17, 26, -17, 26)
+
+[node name="Eye" type="Polygon2D" parent="Player" unique_id=1131962520]
+color = Color(0.08, 0.14, 0.22, 1)
+polygon = PackedVector2Array(3, -14, 11, -14, 11, -6, 3, -6)
+
+[node name="SlidingFeet" type="Polygon2D" parent="Player" unique_id=334052331]
+visible = false
+color = Color(1, 0.16, 0.12, 1)
+polygon = PackedVector2Array(-17, 18, 17, 18, 17, 26, -17, 26)
+
+[node name="AccelerationArrow" type="Polygon2D" parent="Player" unique_id=710552818]
+visible = false
+color = Color(0.25, 1, 0.36, 1)
+polygon = PackedVector2Array(24, -7, 38, -7, 38, -14, 52, 0, 38, 14, 38, 7, 24, 7)
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Player" unique_id=114917496]
+shape = SubResource("PlayerShape")
+
+[node name="ForceIndicator" type="Node2D" parent="Player" unique_id=1458260983]
+z_index = 5
+script = ExtResource("3_force_indicator")
+
+[node name="Camera2D" type="Camera2D" parent="Player" unique_id=559134686]
+position = Vector2(240, -100)
+
+[node name="Instructions" type="CanvasLayer" parent="." unique_id=303421337]
+
+[node name="Label" type="Label" parent="Instructions" unique_id=2011740448]
+offset_left = 28.0
+offset_top = 24.0
+offset_right = 600.0
+offset_bottom = 62.0
+theme_override_font_sizes/font_size = 22
+text = "PHYSICS TEST   |   A / D or arrows: move   |   Space / W: jump   |   Push the crate"
