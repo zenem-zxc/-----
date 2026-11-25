@@ -1,0 +1,66 @@
+[gd_scene load_steps=5 format=3]
+
+[ext_resource type="Script" path="res://scripts/car.gd" id="1"]
+
+[sub_resource type="RectangleShape2D" id="BodyShape"]
+size = Vector2(130, 36)
+
+[sub_resource type="CircleShape2D" id="WheelShape"]
+radius = 18.0
+
+[sub_resource type="PhysicsMaterial" id="WheelMaterial"]
+friction = 1.0
+rough = true
+
+[node name="Car" type="RigidBody2D"]
+mass = 180.0
+script = ExtResource("1")
+
+[node name="BodyVisual" type="Polygon2D" parent="."]
+polygon = PackedVector2Array(-65, -18, -40, -18, -25, -38, 20, -38, 40, -18, 65, -18, 65, 18, -65, 18)
+color = Color(0.85, 0.24, 0.13, 1)
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+shape = SubResource("BodyShape")
+
+[node name="LeftWheel" type="RigidBody2D" parent="."]
+position = Vector2(-43, 20)
+mass = 15.0
+physics_material_override = SubResource("WheelMaterial")
+
+[node name="Visual" type="Polygon2D" parent="LeftWheel"]
+polygon = PackedVector2Array(-18, 0, -13, -13, 0, -18, 13, -13, 18, 0, 13, 13, 0, 18, -13, 13)
+color = Color(0.12, 0.14, 0.17, 1)
+
+[node name="Spoke" type="Polygon2D" parent="LeftWheel"]
+polygon = PackedVector2Array(-3, -14, 3, -14, 3, 14, -3, 14)
+color = Color(0.65, 0.68, 0.7, 1)
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="LeftWheel"]
+shape = SubResource("WheelShape")
+
+[node name="RightWheel" type="RigidBody2D" parent="."]
+position = Vector2(43, 20)
+mass = 15.0
+physics_material_override = SubResource("WheelMaterial")
+
+[node name="Visual" type="Polygon2D" parent="RightWheel"]
+polygon = PackedVector2Array(-18, 0, -13, -13, 0, -18, 13, -13, 18, 0, 13, 13, 0, 18, -13, 13)
+color = Color(0.12, 0.14, 0.17, 1)
+
+[node name="Spoke" type="Polygon2D" parent="RightWheel"]
+polygon = PackedVector2Array(-3, -14, 3, -14, 3, 14, -3, 14)
+color = Color(0.65, 0.68, 0.7, 1)
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="RightWheel"]
+shape = SubResource("WheelShape")
+
+[node name="LeftAxle" type="PinJoint2D" parent="."]
+position = Vector2(-43, 20)
+node_a = NodePath("..")
+node_b = NodePath("../LeftWheel")
+
+[node name="RightAxle" type="PinJoint2D" parent="."]
+position = Vector2(43, 20)
+node_a = NodePath("..")
+node_b = NodePath("../RightWheel")

@@ -20,6 +20,7 @@ Use `res://tests/jump_recoil_test.gd` to check jump impulse and momentum on a mo
 Use `res://tests/air_correction_test.gd` to check the single air correction and its reset after landing.
 Use `res://tests/landing_friction_test.gd` to check landing friction and retained horizontal motion.
 Use `res://tests/wall_jump_test.gd` to check wall jumps on both sides.
+Use `res://tests/car_test.gd` to check car wheels, entry, driving and exit.
 
 ## Style and Naming
 

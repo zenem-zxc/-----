@@ -14,7 +14,8 @@ var _landing_friction_remaining := 0.0
 var _landing_normal_ratio := 1.0
 var _wall_grip_remaining := 0.0
 var _wall_grip_direction := 0.0
-var _wall_grip_spent := false
+var _last_grip_wall: Object = null
+var in_vehicle := false
 
 @onready var _sliding_feet: Polygon2D = $SlidingFeet
 @onready var _acceleration_arrow: Polygon2D = $AccelerationArrow
@@ -28,6 +29,8 @@ func _process(_delta: float) -> void:
 
 
 func _integrate_forces(state: PhysicsDirectBodyState2D) -> void:
+	if in_vehicle:
+		return
 	var grounded := false
 	var support: RigidBody2D = null
 	var support_point := Vector2.ZERO
@@ -35,10 +38,12 @@ func _integrate_forces(state: PhysicsDirectBodyState2D) -> void:
 	var support_contacts := 0
 	var support_collider: Object = null
 	var wall_direction := 0.0
+	var wall_collider: Object = null
 	for contact in range(state.get_contact_count()):
 		var normal := state.get_contact_local_normal(contact)
 		if absf(normal.x) > 0.7 and state.get_contact_collider_object(contact) is StaticBody2D:
 			wall_direction = signf(normal.x)
+			wall_collider = state.get_contact_collider_object(contact)
 		if state.get_contact_local_normal(contact).y < -0.7:
 			var collider := state.get_contact_collider_object(contact)
 			if not grounded:
@@ -55,11 +60,11 @@ func _integrate_forces(state: PhysicsDirectBodyState2D) -> void:
 		support_velocity /= support_contacts
 	if grounded:
 		_wall_grip_remaining = 0.0
-		_wall_grip_spent = false
-	elif wall_direction != 0.0 and not _wall_grip_spent:
+		_last_grip_wall = null
+	elif wall_direction != 0.0 and wall_collider != _last_grip_wall:
 		_wall_grip_direction = wall_direction
 		_wall_grip_remaining = PhysicsValues.WALL_GRIP_TIME
-		_wall_grip_spent = true
+		_last_grip_wall = wall_collider
 	if not grounded and _wall_grip_remaining > 0.0:
 		wall_direction = _wall_grip_direction
 		# Hold position against the wall briefly; gravity resumes on release.

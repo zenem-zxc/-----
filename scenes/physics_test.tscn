@@ -3,6 +3,7 @@
 [ext_resource type="Script" uid="uid://b4jmiftlbfjo2" path="res://scripts/player.gd" id="1_player"]
 [ext_resource type="Script" uid="uid://cy6tnah0dg27q" path="res://scripts/physics_test.gd" id="2_test"]
 [ext_resource type="Script" uid="uid://b0h2oqw7spccm" path="res://scripts/force_indicator.gd" id="3_force_indicator"]
+[ext_resource type="PackedScene" path="res://scenes/car.tscn" id="4_car"]
 
 [sub_resource type="PhysicsMaterial" id="PhysicsMaterial"]
 friction = 0.65
@@ -16,15 +17,15 @@ size = Vector2(180, 24)
 [sub_resource type="RectangleShape2D" id="WallShape"]
 size = Vector2(40, 300)
 
+[sub_resource type="PhysicsMaterial" id="CrateMaterial"]
+friction = 0.65
+rough = true
+
 [sub_resource type="RectangleShape2D" id="CrateShape"]
 size = Vector2(60, 60)
 
 [sub_resource type="PhysicsMaterial" id="PlayerMaterial"]
 friction = 0.0
-
-[sub_resource type="PhysicsMaterial" id="CrateMaterial"]
-friction = 0.65
-rough = true
 
 [sub_resource type="RectangleShape2D" id="PlayerShape"]
 size = Vector2(34, 52)
@@ -32,13 +33,47 @@ size = Vector2(34, 52)
 [node name="PhysicsTest" type="Node2D" unique_id=1695517777]
 script = ExtResource("2_test")
 
+[node name="Car" parent="." unique_id=658656549 instance=ExtResource("4_car")]
+z_index = 1
+position = Vector2(80, 500)
+
 [node name="Background" type="ColorRect" parent="." unique_id=170826755]
-offset_left = -1000.0
+offset_left = -2600.0
 offset_top = -800.0
 offset_right = 2000.0
 offset_bottom = 800.0
 mouse_filter = 2
 color = Color(0.075, 0.105, 0.16, 1)
+
+[node name="TestRoad" type="StaticBody2D" parent="." unique_id=17495741]
+physics_material_override = SubResource("PhysicsMaterial")
+
+[node name="Visual" type="Polygon2D" parent="TestRoad" unique_id=919171829]
+color = Color(0.22, 0.35, 0.32, 1)
+polygon = PackedVector2Array(-2300, 560, -2200, 560, -2120, 550, -2040, 520, -1970, 480, -1910, 465, -1850, 480, -1780, 520, -1700, 550, -1620, 560, -1540, 550, -1460, 525, -1380, 515, -1300, 530, -1220, 555, -1140, 560, -1060, 550, -980, 510, -910, 470, -840, 455, -770, 470, -700, 510, -620, 550, -540, 560, -460, 550, -380, 535, -300, 545, -220, 560, -124, 560, -124, 680, -2300, 680)
+
+[node name="CollisionPolygon2D" type="CollisionPolygon2D" parent="TestRoad" unique_id=1284504915]
+polygon = PackedVector2Array(-2300, 560, -2200, 560, -2120, 550, -2040, 520, -1970, 480, -1910, 465, -1850, 480, -1780, 520, -1700, 550, -1620, 560, -1540, 550, -1460, 525, -1380, 515, -1300, 530, -1220, 555, -1140, 560, -1060, 550, -980, 510, -910, 470, -840, 455, -770, 470, -700, 510, -620, 550, -540, 560, -460, 550, -380, 535, -300, 545, -220, 560, -124, 560, -124, 680, -2300, 680)
+
+[node name="StoneOne" type="StaticBody2D" parent="." unique_id=2084398228]
+position = Vector2(-570, 555)
+
+[node name="Visual" type="Polygon2D" parent="StoneOne" unique_id=1763181742]
+color = Color(0.52, 0.54, 0.53, 1)
+polygon = PackedVector2Array(-13, 7, -10, -2, -3, -9, 7, -8, 13, 5, 11, 7)
+
+[node name="CollisionPolygon2D" type="CollisionPolygon2D" parent="StoneOne" unique_id=21257893]
+polygon = PackedVector2Array(-13, 7, -10, -2, -3, -9, 7, -8, 13, 5, 11, 7)
+
+[node name="StoneTwo" type="StaticBody2D" parent="." unique_id=1600657805]
+position = Vector2(-1170, 559)
+
+[node name="Visual" type="Polygon2D" parent="StoneTwo" unique_id=1590324682]
+color = Color(0.52, 0.54, 0.53, 1)
+polygon = PackedVector2Array(-11, 5, -8, -3, 1, -8, 9, -4, 12, 4, 10, 5)
+
+[node name="CollisionPolygon2D" type="CollisionPolygon2D" parent="StoneTwo" unique_id=1878504208]
+polygon = PackedVector2Array(-11, 5, -8, -3, 1, -8, 9, -4, 12, 4, 10, 5)
 
 [node name="Ground" type="StaticBody2D" parent="." unique_id=506691409]
 position = Vector2(576, 600)
@@ -61,14 +96,14 @@ polygon = PackedVector2Array(-90, -12, 90, -12, 90, 12, -90, 12)
 [node name="CollisionShape2D" type="CollisionShape2D" parent="Platform" unique_id=137643917]
 shape = SubResource("PlatformShape")
 
-[node name="Wall" type="StaticBody2D" parent="."]
+[node name="Wall" type="StaticBody2D" parent="." unique_id=228862351]
 position = Vector2(950, 410)
 
-[node name="Visual" type="Polygon2D" parent="Wall"]
-polygon = PackedVector2Array(-20, -150, 20, -150, 20, 150, -20, 150)
+[node name="Visual" type="Polygon2D" parent="Wall" unique_id=538142266]
 color = Color(0.35, 0.53, 0.43, 1)
+polygon = PackedVector2Array(-20, -150, 20, -150, 20, 150, -20, 150)
 
-[node name="CollisionShape2D" type="CollisionShape2D" parent="Wall"]
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Wall" unique_id=908910108]
 shape = SubResource("WallShape")
 
 [node name="Crate" type="RigidBody2D" parent="." unique_id=697072121]
@@ -81,7 +116,7 @@ angular_damp_mode = 1
 
 [node name="Visual" type="Polygon2D" parent="Crate" unique_id=900358102]
 color = Color(0.8, 0.49, 0.25, 1)
-polygon = PackedVector2Array(-30, -30, 30, -30, 30, 30, -30, 30)
+polygon = PackedVector2Array(-30.799988, -30, 30, -30, 30, 30, -30, 29.999992)
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="Crate" unique_id=292953036]
 shape = SubResource("CrateShape")
@@ -139,4 +174,4 @@ offset_top = 24.0
 offset_right = 600.0
 offset_bottom = 62.0
 theme_override_font_sizes/font_size = 22
-text = "PHYSICS TEST   |   A / D or arrows: move   |   Space / W: jump   |   Push the crate"
+text = "A / D: move or drive   |   Space / W: jump   |   E: enter / exit car"

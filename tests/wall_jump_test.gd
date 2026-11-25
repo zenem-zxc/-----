@@ -34,5 +34,28 @@ func _run_test() -> void:
 			return
 		scene.queue_free()
 		await process_frame
+	var scene: Node = load("res://scenes/physics_test.tscn").instantiate()
+	root.add_child(scene)
+	var player: RigidBody2D = scene.get_node("Player")
+	var wall: StaticBody2D = scene.get_node("Wall")
+	var other_wall := wall.duplicate() as StaticBody2D
+	other_wall.position.x = 750
+	scene.add_child(other_wall)
+	player.position = Vector2(912, 350)
+	player.linear_velocity = Vector2(80, 0)
+	for i in range(18):
+		await physics_frame
+	if player._wall_grip_remaining > 0.0:
+		push_error("Grip restarted on the same wall")
+		quit(1)
+		return
+	player.position = Vector2(788, 350)
+	player.linear_velocity = Vector2(-80, 0)
+	for i in range(4):
+		await physics_frame
+	if player._last_grip_wall != other_wall or player._wall_grip_remaining <= 0.0:
+		push_error("Grip did not activate on another wall")
+		quit(1)
+		return
 	print("PASS: wall jump pushes away and upward on both sides")
 	quit(0)
